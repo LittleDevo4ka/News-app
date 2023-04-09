@@ -46,6 +46,7 @@ class NewsAPIService(private val repository: Repository) {
     }
 
     fun sendTopNews(data: News?, code: Int) {
+
         repository.setTopNews(data, code)
     }
 

@@ -6,14 +6,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentHomeBinding
+import com.example.newsapp.databinding.NewsCardBinding
+import com.example.newsapp.model.retrofit.news.Article
+import com.example.newsapp.model.room.HomeNews
 import com.example.newsapp.viewModel.MainViewModel
 import kotlinx.coroutines.launch
+import kotlin.math.ceil
 
 class HomeFragment : Fragment() {
 
@@ -37,26 +44,47 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapterList: MutableList<HomeNews> = mutableListOf()
+        val myAdapter = NewsRecyclerItem(adapterList, requireContext())
+
+        binding.newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.newsRecyclerView.adapter = myAdapter
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.getResponseCode().collect {
                     if (it != null) {
                         if (it == 200) {
-                            addNewsCards()
                         } else {
                             Log.w(tag, "Something went wrong")
+                            binding.refreshLayout.isRefreshing = false
+                            Toast.makeText(context, "Oups! Something went wrong…\n" +
+                                    "Check yout internet connection", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
             }
         }
 
-        viewModel.updateTopNews()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.getAllHomeTopNews().collect {
+                    if(it.isEmpty()) {
+                        viewModel.updateTopNews()
+                    } else {
+                        binding.refreshLayout.isRefreshing = false
+                        adapterList.clear()
+                        adapterList.addAll(it)
+
+                        myAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.updateTopNews()
+        }
+
     }
-
-    private fun addNewsCards() {
-        println("Hello!")
-    }
-
-
 }

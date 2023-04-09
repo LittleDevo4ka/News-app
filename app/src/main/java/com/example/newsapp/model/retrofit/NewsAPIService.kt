@@ -23,7 +23,7 @@ class NewsAPIService(private val repository: Repository) {
     private val tag = "NewsAPIService"
 
     fun getTopNews() {
-        val topNewsUrl = "${baseNewsURL}country=ru&apiKey=${BuildConfig.News_API_KEY}"
+        val topNewsUrl = "${baseNewsURL}country=us&apiKey=${BuildConfig.News_API_KEY}"
 
         val call = retrofit.getTopNews(topNewsUrl)
         call.enqueue(object: Callback<News>{

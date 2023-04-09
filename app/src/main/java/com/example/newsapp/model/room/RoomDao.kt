@@ -15,8 +15,11 @@ interface RoomDao {
     fun gelAllTopNewsHome(): Flow<List<HomeNews>>
 
     @Insert
-    fun addNewsEntity(newsEntity: NewsEntity)
+    suspend fun addNewsEntity(newsEntity: NewsEntity)
 
     @Query("DELETE FROM news")
-    fun deleteAll()
+    suspend fun deleteAll()
+
+    @Query("SELECT * FROM news WHERE id=:id")
+    fun getNewsById(id: Int): Flow<NewsInfo>
 }

@@ -22,7 +22,7 @@ abstract class AppDatabaseModel: RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabaseModel::class.java, "notify_database"
-                ).allowMainThreadQueries().build()
+                ).build()
                 INSTANCE = instance
                 return instance }
         }

@@ -8,7 +8,11 @@ import com.example.newsapp.model.room.HomeNews
 import com.example.newsapp.model.room.NewsEntity
 import com.example.newsapp.model.room.NewsInfo
 import com.example.newsapp.viewModel.RepositoryViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class Repository(private val viewModel: RepositoryViewModel, context: Context) {
 
@@ -28,14 +32,19 @@ class Repository(private val viewModel: RepositoryViewModel, context: Context) {
         return roomDao.gelAllTopNewsHome()
     }
 
+    suspend fun deleteAll() {
+        roomDao.deleteAll()
+    }
+
+    suspend fun insertNews(newsEntity: NewsEntity) {
+        roomDao.addNewsEntity(newsEntity)
+    }
+
     fun setTopNews(data: News?, code: Int) {
-        viewModel.setTopNews(code)
-        if(data != null) {
-            roomDao.deleteAll()
-            for (i in 0 until  data.articles.size) {
-                val newsEntity = data.articles[i].toNewsEntity()
-                roomDao.addNewsEntity(newsEntity)
-            }
-        }
+        viewModel.setTopNews(data, code)
+    }
+
+     fun getNewsById(id: Int): Flow<NewsInfo> {
+        return roomDao.getNewsById(id)
     }
 }

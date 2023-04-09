@@ -4,5 +4,5 @@ import com.example.newsapp.model.retrofit.news.News
 
 interface RepositoryViewModel {
 
-    fun setTopNews(code: Int)
+    fun setTopNews(data: News?, code: Int)
 }

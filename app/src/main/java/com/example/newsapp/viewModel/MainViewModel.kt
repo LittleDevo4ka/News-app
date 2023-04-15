@@ -1,6 +1,8 @@
 package com.example.newsapp.viewModel
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsapp.model.Repository
@@ -14,11 +16,42 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application): AndroidViewModel(application), RepositoryViewModel {
 
-    private val responseCode: MutableStateFlow<Int?> = MutableStateFlow(null)
-
     private val repository: Repository = Repository(this, application)
 
+    private val responseCode: MutableStateFlow<Int?> = MutableStateFlow(null)
+
     private var newsId: Int = -1
+
+    private var trendingCountry: String
+    private var trendingCategory: String
+
+    private val saveInfo: SharedPreferences
+
+    init {
+        saveInfo = application.getSharedPreferences("saveInfo", Context.MODE_PRIVATE)
+        trendingCountry = saveInfo.getString("trendingCountry", "us").toString()
+        trendingCategory = saveInfo.getString("trendingCategory", "general").toString()
+    }
+
+    fun setTrendingCountry(countryCode: String) {
+        trendingCountry = countryCode
+
+        saveInfo.edit().putString("trendingCountry", trendingCountry).apply()
+    }
+
+    fun getTrendingCountry(): String {
+        return trendingCountry
+    }
+
+    fun setTrendingCategory(category: String) {
+        trendingCategory = category
+
+        saveInfo.edit().putString("trendingCategory", trendingCategory).apply()
+    }
+
+    fun getTrendingCategory(): String {
+        return trendingCategory
+    }
 
     fun setNewsId(tempId: Int){
         newsId = tempId
@@ -30,7 +63,7 @@ class MainViewModel(application: Application): AndroidViewModel(application), Re
 
     fun updateTopNews() {
         responseCode.value = null
-        repository.updateTopNews()
+        repository.updateTopNews(trendingCountry, trendingCategory)
     }
 
     fun getResponseCode(): MutableStateFlow<Int?> {

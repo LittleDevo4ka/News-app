@@ -8,18 +8,14 @@
         android:id="@+id/homeFragment"
         android:name="com.example.newsapp.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_singleNewsFragment"
-            app:destination="@id/singleNewsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/singleNewsFragment"
         android:name="com.example.newsapp.view.SingleNewsFragment"
         android:label="fragment_single_news"
-        tools:layout="@layout/fragment_single_news" >
-        <action
-            android:id="@+id/action_singleNewsFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_single_news" />
+    <fragment
+        android:id="@+id/trendingFragment"
+        android:name="com.example.newsapp.view.TrendingFragment"
+        android:label="TrendingFragment" />
 </navigation>

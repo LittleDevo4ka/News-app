@@ -20,8 +20,8 @@ class Repository(private val viewModel: RepositoryViewModel, context: Context) {
 
     private val roomDao = AppDatabaseModel.getDatabase(context).getDao()
 
-    fun updateTopNews() {
-        newsAPIService.getTopNews()
+    fun updateTopNews(country: String, category: String) {
+        newsAPIService.getTopNews(country, category)
     }
 
     fun getAllTopNews(): Flow<List<NewsInfo>> {

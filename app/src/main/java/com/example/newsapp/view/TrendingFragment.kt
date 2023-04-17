@@ -21,6 +21,7 @@ import com.example.newsapp.viewModel.MainViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.launch
+import java.util.*
 
 class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
 
@@ -54,7 +55,11 @@ class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.getResponseCode().collect {
                     if (it != null) {
-                        if (it != 200) {
+                        if (it == 100) {
+                            Toast.makeText(context, "Oups! Nothing found",
+                                Toast.LENGTH_SHORT).show()
+                            binding.refreshLayout.isRefreshing = false
+                        } else if (it != 200) {
                             Log.w(tag, "Something went wrong")
                             binding.refreshLayout.isRefreshing = false
                             Toast.makeText(context, "Oups! Something went wrong…\n" +
@@ -98,6 +103,9 @@ class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
         }
 
         (binding.countryTextFieldTrending.editText as MaterialAutoCompleteTextView)
+            .setSimpleItems(viewModel.getAllCountries())
+
+        (binding.countryTextFieldTrending.editText as MaterialAutoCompleteTextView)
             .setText(viewModel.getTrendingCountry(), false)
         (binding.categoryTextFieldTrending.editText as MaterialAutoCompleteTextView)
             .setText(viewModel.getTrendingCategory(), false)
@@ -139,8 +147,6 @@ class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
                 }
             }
         }
-
-
 
     }
 

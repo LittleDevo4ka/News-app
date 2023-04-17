@@ -35,8 +35,12 @@ class NewsAPIService(private val repository: Repository) {
         call.enqueue(object: Callback<News>{
             override fun onResponse(call: Call<News>, response: Response<News>) {
                 if (response.isSuccessful) {
-                    Log.i(tag, "getTopNews: ok")
-                    response.body()?.let { sendTopNews(it, 200) }
+                    Log.i(tag, "getTopNews: ${response.body()?.status}")
+                    if (response.body()?.articles?.size == 0) {
+                        sendTopNews(null ,100)
+                    } else {
+                        response.body()?.let { sendTopNews(it, 200) }
+                    }
                 } else {
                     Log.w(tag, "getTopNews: Something went wrong: ${response.code()}")
                     sendTopNews(null, 300)
@@ -57,16 +61,25 @@ class NewsAPIService(private val repository: Repository) {
     }
 
     fun getArticles(searchQuery: String, language: String, sortBy: String) {
-        val articlesURL = "${baseArticlesURL}q=\"$searchQuery\"&language=$language" +
-                "&sortBy=$sortBy&pageSize=20&apiKey=${BuildConfig.News_API_KEY}"
-        println(articlesURL)
+        val articlesURL = if (language.isNotEmpty()) {
+            "${baseArticlesURL}q=\"$searchQuery\"&language=$language" +
+                    "&sortBy=$sortBy&pageSize=20&apiKey=${BuildConfig.News_API_KEY}"
+        } else {
+            "${baseArticlesURL}q=\"$searchQuery\"" +
+                    "&sortBy=$sortBy&pageSize=20&apiKey=${BuildConfig.News_API_KEY}"
+        }
+
 
         val call = retrofit.getNews(articlesURL)
         call.enqueue(object: Callback<News> {
             override fun onResponse(call: Call<News>, response: Response<News>) {
                 if(response.isSuccessful) {
-                    Log.i(tag, "getArticles: ok")
-                    response.body()?.let { sendArticles(it, 200) }
+                    Log.i(tag, "getArticles: ${response.body()?.status}")
+                    if (response.body()?.articles?.size == 0) {
+                        sendTopNews(null ,100)
+                    } else {
+                        response.body()?.let { sendArticles(it, 200) }
+                    }
                 } else {
                     Log.w(tag, "getArticles: Something went wrong: ${response.code()}")
                     sendArticles(null, 300)

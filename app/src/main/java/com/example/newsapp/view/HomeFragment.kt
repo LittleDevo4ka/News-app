@@ -59,7 +59,11 @@ class HomeFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.getResponseCode().collect {
                     if (it != null) {
-                        if (it != 200) {
+                        if (it == 100) {
+                            Toast.makeText(context, "Oups! Nothing found",
+                                Toast.LENGTH_SHORT).show()
+                            binding.refreshLayout.isRefreshing = false
+                        } else if (it != 200) {
                             Log.w(tag, "Something went wrong")
                             binding.refreshLayout.isRefreshing = false
                             Toast.makeText(context, "Oups! Something went wrong…\n" +
@@ -83,6 +87,8 @@ class HomeFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
                 }
             }
         }
+        (binding.languageTextFieldHome.editText as MaterialAutoCompleteTextView)
+            .setSimpleItems(viewModel.getAllLanguages())
 
         binding.searchEditTextHome.setText(viewModel.getSearchQuery())
         (binding.languageTextFieldHome.editText as MaterialAutoCompleteTextView)

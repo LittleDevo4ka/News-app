@@ -162,7 +162,6 @@ class HomeFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
         } else {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.getAllArticlesShort().collect{
-                    Log.e(tag, position.toString())
                     viewModel.saveNews(true, it[position].id)
                     (activity as MainActivity).setSingleNewsFragment()
                 }

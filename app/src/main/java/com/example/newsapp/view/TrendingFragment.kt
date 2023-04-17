@@ -28,7 +28,7 @@ class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
     private lateinit var binding: FragmentTrendingBinding
     private lateinit var viewModel: MainViewModel
 
-    private val tag = "HomeFragment"
+    private val tag = "TrendingFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

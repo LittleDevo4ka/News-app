@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentSingleNewsBinding
@@ -43,11 +45,9 @@ class SingleNewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (viewModel.getNewsId() == -1) {
-            binding.singleNewsTitle.text = "Choose some news"
-        } else {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.getNewsById().collect{
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.getSavedNews()?.collect {
                     Glide.with(requireContext()).load(it.urlToImage)
                         .into(binding.singleNewsImage)
 

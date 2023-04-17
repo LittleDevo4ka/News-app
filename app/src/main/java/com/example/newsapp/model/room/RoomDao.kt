@@ -8,18 +8,28 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RoomDao {
-    @Query("SELECT * FROM news")
-    fun getAllTopNews(): Flow<List<NewsInfo>>
 
     @Query("SELECT * FROM news")
-    fun gelAllTopNewsHome(): Flow<List<HomeNews>>
+    fun getAllTopNewsShort(): Flow<List<ShortNews>>
 
     @Insert
-    suspend fun addNewsEntity(newsEntity: NewsEntity)
+    suspend fun addTopNewsEntity(newsEntity: NewsEntity)
 
     @Query("DELETE FROM news")
-    suspend fun deleteAll()
+    suspend fun deleteAllTopNews()
 
     @Query("SELECT * FROM news WHERE id=:id")
     fun getNewsById(id: Int): Flow<NewsInfo>
+
+    @Query("SELECT * FROM articles")
+    fun getAllArticlesShort(): Flow<List<ShortNews>>
+
+    @Insert
+    suspend fun addArticlesEntity(articlesEntity: ArticlesEntity)
+
+    @Query("DELETE FROM articles")
+    suspend fun deleteAllArticles()
+
+    @Query("SELECT * FROM articles WHERE id=:id")
+    fun getArticleById(id: Int): Flow<NewsInfo>
 }

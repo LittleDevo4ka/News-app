@@ -13,7 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class NewsAPIService(private val repository: Repository) {
 
-    private val baseNewsURL = "https://newsapi.org/v2/top-headlines?"
+    private val baseTopNewsURL = "https://newsapi.org/v2/top-headlines?"
+    private val baseArticlesURL = "https://newsapi.org/v2/everything?"
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://newsapi.org/v2/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -24,17 +25,17 @@ class NewsAPIService(private val repository: Repository) {
 
     fun getTopNews(country: String, category: String) {
         val topNewsUrl: String = if (category.isEmpty()) {
-            "${baseNewsURL}country=$country&apiKey=${BuildConfig.News_API_KEY}"
+            "${baseTopNewsURL}country=$country&apiKey=${BuildConfig.News_API_KEY}"
         } else {
-            "${baseNewsURL}country=$country&category=$category" +
+            "${baseTopNewsURL}country=$country&category=$category" +
                     "&apiKey=${BuildConfig.News_API_KEY}"
         }
 
-        val call = retrofit.getTopNews(topNewsUrl)
+        val call = retrofit.getNews(topNewsUrl)
         call.enqueue(object: Callback<News>{
             override fun onResponse(call: Call<News>, response: Response<News>) {
                 if (response.isSuccessful) {
-                    Log.w(tag, "getTopNews: ok")
+                    Log.i(tag, "getTopNews: ok")
                     response.body()?.let { sendTopNews(it, 200) }
                 } else {
                     Log.w(tag, "getTopNews: Something went wrong: ${response.code()}")
@@ -53,6 +54,35 @@ class NewsAPIService(private val repository: Repository) {
     fun sendTopNews(data: News?, code: Int) {
 
         repository.setTopNews(data, code)
+    }
+
+    fun getArticles(searchQuery: String, language: String, sortBy: String) {
+        val articlesURL = "${baseArticlesURL}q=\"$searchQuery\"&language=$language" +
+                "&sortBy=$sortBy&pageSize=20&apiKey=${BuildConfig.News_API_KEY}"
+        println(articlesURL)
+
+        val call = retrofit.getNews(articlesURL)
+        call.enqueue(object: Callback<News> {
+            override fun onResponse(call: Call<News>, response: Response<News>) {
+                if(response.isSuccessful) {
+                    Log.i(tag, "getArticles: ok")
+                    response.body()?.let { sendArticles(it, 200) }
+                } else {
+                    Log.w(tag, "getArticles: Something went wrong: ${response.code()}")
+                    sendArticles(null, 300)
+                }
+            }
+
+            override fun onFailure(call: Call<News>, t: Throwable) {
+                Log.w("tag", "getArticles: Something really went wrong: ${t.message}")
+                sendArticles(null, 400)
+            }
+
+        })
+    }
+
+    fun sendArticles(data: News?, code: Int) {
+        repository.setArticles(data, code)
     }
 
 

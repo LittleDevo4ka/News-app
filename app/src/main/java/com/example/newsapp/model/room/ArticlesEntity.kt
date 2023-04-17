@@ -1,14 +1,12 @@
 package com.example.newsapp.model.room
 
-data class ShortNews(
-    val id: Int,
-    val title: String?,
-    val author: String?,
-    val urlToImage: String?
-)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class NewsInfo(
-    val id: Int,
+@Entity(tableName = "articles")
+data class ArticlesEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val title: String?,
     val author: String?,
     val content: String?,

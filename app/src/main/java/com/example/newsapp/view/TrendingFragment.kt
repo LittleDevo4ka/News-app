@@ -1,32 +1,26 @@
 package com.example.newsapp.view
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
-import com.example.newsapp.databinding.FragmentHomeBinding
 import com.example.newsapp.databinding.FragmentTrendingBinding
-import com.example.newsapp.model.room.HomeNews
+import com.example.newsapp.model.room.ShortNews
 import com.example.newsapp.viewModel.MainViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.launch
-import kotlin.math.ceil
 
 class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
 
@@ -50,7 +44,7 @@ class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapterList: MutableList<HomeNews> = mutableListOf()
+        val adapterList: MutableList<ShortNews> = mutableListOf()
         val myAdapter = NewsRecyclerItem(adapterList, requireContext(), this)
 
         binding.trendingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -73,7 +67,7 @@ class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getAllHomeTopNews().collect {
+                viewModel.getAllTopNewsShort().collect {
                     if(it.isEmpty()) {
                         viewModel.updateTopNews()
                     } else {
@@ -88,14 +82,14 @@ class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
         }
 
         binding.filtersTbTrending.setOnClickListener{
-            if (binding.countyTextFieldTrending.isVisible) {
-                binding.countyTextFieldTrending.visibility = View.GONE
+            if (binding.countryTextFieldTrending.isVisible) {
+                binding.countryTextFieldTrending.visibility = View.GONE
                 binding.categoryTextFieldTrending.visibility = View.GONE
                 (binding.filtersTbTrending as MaterialButton).icon =
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_filters)
                 binding.filtersTbTrending.text = "Show filters"
             } else {
-                binding.countyTextFieldTrending.visibility = View.VISIBLE
+                binding.countryTextFieldTrending.visibility = View.VISIBLE
                 binding.categoryTextFieldTrending.visibility = View.VISIBLE
                 (binding.filtersTbTrending as MaterialButton).icon =
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_filters_off)
@@ -103,13 +97,13 @@ class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
             }
         }
 
-        (binding.countyTextFieldTrending.editText as MaterialAutoCompleteTextView)
+        (binding.countryTextFieldTrending.editText as MaterialAutoCompleteTextView)
             .setText(viewModel.getTrendingCountry(), false)
         (binding.categoryTextFieldTrending.editText as MaterialAutoCompleteTextView)
             .setText(viewModel.getTrendingCategory(), false)
 
         binding.refreshLayout.setOnRefreshListener {
-            val country = binding.countyTextFieldTrending.editText?.text.toString()
+            val country = binding.countryTextFieldTrending.editText?.text.toString()
             viewModel.setTrendingCountry(country)
             val category = binding.categoryTextFieldTrending.editText?.text.toString()
             viewModel.setTrendingCategory(category)
@@ -123,11 +117,10 @@ class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
             } else {
                 binding.refreshLayout.isRefreshing = true
 
-                val country = binding.countyTextFieldTrending.editText?.text.toString()
+                val country = binding.countryTextFieldTrending.editText?.text.toString()
                 viewModel.setTrendingCountry(country)
                 val category = binding.categoryTextFieldTrending.editText?.text.toString()
                 viewModel.setTrendingCategory(category)
-                viewModel.updateTopNews()
                 viewModel.updateTopNews()
             }
         }
@@ -140,8 +133,8 @@ class TrendingFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
                 Toast.LENGTH_SHORT).show()
         } else {
             viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.getAllHomeTopNews().collect{
-                    viewModel.setNewsId(it[position].id)
+                viewModel.getAllTopNewsShort().collect{
+                    viewModel.saveNews(false, it[position].id)
                     (activity as MainActivity).setSingleNewsFragment()
                 }
             }

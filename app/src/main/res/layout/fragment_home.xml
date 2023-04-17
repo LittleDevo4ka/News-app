@@ -12,10 +12,112 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
+
+        <Button
+            android:id="@+id/filters_tb_home"
+
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show filters"
+            app:icon="@drawable/ic_filters"
+
+            app:layout_constraintTop_toBottomOf="@id/sortBy_text_field_home"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"/>
+
+        <Button
+            android:id="@+id/update_tb_home"
+
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            app:icon="@drawable/ic_search"
+
+            app:layout_constraintTop_toBottomOf="@id/sortBy_text_field_home"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_text_field_home"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp">
+
+            <EditText
+                android:id="@+id/search_edit_text_home"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
+                android:inputType="text"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/language_text_field_home"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:hint="Language"
+            android:visibility="gone"
+
+            app:layout_constraintTop_toBottomOf="@id/search_text_field_home"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp">
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sortBy_text_field_home"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:hint="sortBy"
+            android:visibility="gone"
+
+            app:layout_constraintTop_toBottomOf="@id/language_text_field_home"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp">
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                app:simpleItems="@array/sortBy"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/news_recyclerView"
+            android:id="@+id/home_recyclerView"
 
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -23,7 +125,8 @@
             android:overScrollMode="never"
 
             android:clipToPadding="false"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/filters_tb_home"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
             app:layout_constraintEnd_toEndOf="parent"

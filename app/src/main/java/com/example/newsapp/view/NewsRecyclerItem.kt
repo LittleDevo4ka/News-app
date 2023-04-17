@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.newsapp.R
 import com.example.newsapp.model.retrofit.news.Article
-import com.example.newsapp.model.room.HomeNews
+import com.example.newsapp.model.room.ShortNews
 import com.google.android.material.card.MaterialCardView
 
-class NewsRecyclerItem(private val newsList: List<HomeNews>, private val context: Context,
+class NewsRecyclerItem(private val newsList: List<ShortNews>, private val context: Context,
 onClickListener: onItemClickListener) :
     RecyclerView.Adapter<NewsRecyclerItem.MyViewHolder>() {
 

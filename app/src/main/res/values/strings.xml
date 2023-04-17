@@ -13,4 +13,12 @@
         <item>sports</item>
         <item>technology</item>
     </string-array>
+
+    <string-array name="sortBy">
+        <item>relevancy</item>
+        <item>popularity</item>
+        <item>publishedAt</item>
+    </string-array>
+    
+
 </resources>

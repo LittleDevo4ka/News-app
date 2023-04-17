@@ -1,5 +1,6 @@
 package com.example.newsapp.model.retrofit.news
 
+import com.example.newsapp.model.room.ArticlesEntity
 import com.example.newsapp.model.room.NewsEntity
 
 data class Article(
@@ -14,5 +15,9 @@ data class Article(
 ) {
     fun toNewsEntity(): NewsEntity {
         return NewsEntity(0, title, author, content, description, publishedAt, url, urlToImage)
+    }
+
+    fun toArticlesEntity(): ArticlesEntity {
+        return ArticlesEntity(0, title, author, content, description, publishedAt, url, urlToImage)
     }
 }

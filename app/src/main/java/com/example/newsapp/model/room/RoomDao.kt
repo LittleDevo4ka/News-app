@@ -3,7 +3,6 @@ package com.example.newsapp.model.room
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.newsapp.model.retrofit.news.Article
 import kotlinx.coroutines.flow.Flow
 
 @Dao

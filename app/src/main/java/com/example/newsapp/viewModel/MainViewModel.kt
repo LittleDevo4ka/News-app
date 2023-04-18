@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Query
 import com.example.newsapp.model.Repository
 import com.example.newsapp.model.retrofit.news.News
 import com.example.newsapp.model.room.NewsInfo
@@ -13,7 +12,6 @@ import com.example.newsapp.model.room.ShortNews
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 

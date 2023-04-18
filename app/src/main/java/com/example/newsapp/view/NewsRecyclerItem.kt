@@ -1,7 +1,6 @@
 package com.example.newsapp.view
 
 import android.content.Context
-import android.content.DialogInterface.OnClickListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.newsapp.R
-import com.example.newsapp.model.retrofit.news.Article
 import com.example.newsapp.model.room.ShortNews
 import com.google.android.material.card.MaterialCardView
 

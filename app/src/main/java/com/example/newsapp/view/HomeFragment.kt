@@ -2,30 +2,25 @@ package com.example.newsapp.view
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentHomeBinding
-import com.example.newsapp.databinding.NewsCardBinding
-import com.example.newsapp.model.retrofit.news.Article
 import com.example.newsapp.model.room.ShortNews
 import com.example.newsapp.viewModel.MainViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.launch
-import kotlin.math.ceil
 
 class HomeFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
 
@@ -109,7 +104,7 @@ class HomeFragment : Fragment(), NewsRecyclerItem.onItemClickListener {
             val language = binding.languageTextFieldHome.editText?.text.toString()
             viewModel.setSearchLanguage(language)
             val sortBy = binding.sortByTextFieldHome.editText?.text.toString()
-            viewModel.setTrendingCategory(sortBy)
+            viewModel.setSortBy(sortBy)
 
             viewModel.findArticles()
         }

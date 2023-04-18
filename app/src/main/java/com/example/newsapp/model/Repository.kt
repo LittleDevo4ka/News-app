@@ -2,16 +2,10 @@ package com.example.newsapp.model
 
 import android.content.Context
 import com.example.newsapp.model.retrofit.NewsAPIService
-import com.example.newsapp.model.retrofit.news.Article
 import com.example.newsapp.model.retrofit.news.News
 import com.example.newsapp.model.room.*
 import com.example.newsapp.viewModel.RepositoryViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
-import org.intellij.lang.annotations.Language
 
 class Repository(private val viewModel: RepositoryViewModel, context: Context) {
 

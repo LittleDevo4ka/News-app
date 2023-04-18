@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +19,6 @@ import com.bumptech.glide.Glide
 import com.example.newsapp.databinding.FragmentSingleNewsBinding
 import com.example.newsapp.viewModel.MainViewModel
 import kotlinx.coroutines.launch
-
 
 
 class SingleNewsFragment : Fragment() {

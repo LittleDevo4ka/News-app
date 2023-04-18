@@ -6,7 +6,7 @@
 Платформа: Android (10 - 13)   
 Архитектура: MVVM  
 View: ViewBinding, Material 3, RecyclerView, Glide, Navigation API, SwipeRefreshLayout  
-ViewModel, Model: Retrofit, Room, Coroutine, Kotlin Flow, data classes  
+ViewModel, Model: Retrofit, Room, Kotlin Coroutines, Kotlin Flow, data classes  
 
 ### Внешние API:
 <a href="https://newsapi.org/">News API</a>, позволяет получать новости и статьи.
